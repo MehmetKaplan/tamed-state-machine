@@ -1,0 +1,15 @@
+{
+  "name": "tamed-state-machine",
+  "version": "1.0.0",
+  "description": "A state machine handler for node.js using PostgreSQL.",
+  "main": "index.js",
+  "repository": "https://github.com/MehmetKaplan/tamed-state-machine",
+  "author": "Mehmet Kaplan",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "fetch-lean": "^1.0.5",
+    "tamed-pg": "^2.0.0",
+    "tick-log": "^1.1.4"
+  }
+}
