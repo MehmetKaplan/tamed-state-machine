@@ -1,0 +1,13 @@
+{
+	"applicationName": "tamed-state-machine",
+	"noSMfound": "No state machine found.",
+	"multipleSMfound": "Multiple state machines found, please correct the database.",
+	"noInitialStateFound": "No initial state found, please correct the database.",
+	"multipleInitialStatesFound": "Multiple initial states found, please correct the database.",
+	"noInstanceFound": "No instance found.",
+	"existingInstanceFound": "Existing instance found.",
+	"multipleInstancesFound": "Multiple instances found, please correct the database.",
+	"transitionNotAllowed": "Transition not allowed.",
+	"commentTooLong": "Comment too long.",
+	"unknownError": "An unknown error occurred."
+}
