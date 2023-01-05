@@ -147,14 +147,24 @@ test('Check states of the state machine', async () => {
 	expect(result7.result).toBe('OK');
 	expect(result7.payload).toBeFalsy();
 	try {
-		const result7 = await tsmb.transitionInstance(testExternalName, testExternalId2, testStateMachineName, 'Close', 'JEST-TEST', 'JEST-TEST');
+		const result8 = await tsmb.transitionInstance(testExternalName, testExternalId2, testStateMachineName, 'Close', 'JEST-TEST', 'JEST-TEST');
 		expect(true).toBe(false); // should not reach here
 	} catch (error) {
 		expect(error).toBe(uiTexts.transitionNotAllowed);
 	}
-
+	const result9 = await tsmb.transitionInstance(testExternalName, testExternalId2, testStateMachineName, 'Approve', 'JEST-TEST', 'JEST-TEST');
+	tickLog.info(`transitionInstance: ${JSON.stringify(result9)}`, true);
+	expect(result9.result).toBe('OK');
+	expect(result9.payload).toBeFalsy();
+	const result10 = await tsmb.transitionInstance(testExternalName, testExternalId2, testStateMachineName, 'Close', 'JEST-TEST', 'JEST-TEST');
+	expect(result10.result).toBe('OK');
+	expect(result10.payload).toBeFalsy();
+	const result11 = await tsmb.getInstanceHistory(testExternalName, testExternalId2, testStateMachineName);
+	const sortedResult11 = result11.payload.sort((a,b) => Number(a.id) - Number(b.id))
+	tickLog.info(`\x1b[0;33mTHE STATE TRANSITION HISTORY:\x1b[0m`, true);
+	for(let i = 0; i < sortedResult11.length; i++){
+		tickLog.info(JSON.stringify(sortedResult11[i]), true);
+	}
+	expect(result11.result).toBe('OK');
+	expect(result11.payload.length).toBe(8);
 });
-
-/*
-	getInstanceHistory: getInstanceHistory,
-*/
