@@ -5,6 +5,7 @@
 	"getInstance": "select * from tsm.instances where external_name = $1 and external_id = $2 and sm_id = $3 and valid = 'Y'",
 	"deleteInstance": "update tsm.instances set valid = 'N' where id = $1",
 	"getPossibleTransitions": "select * from tsm.state_machine_state_transitions where sm_id = $1 and from_state = $2",
+	"getAllPossibleTransitions": "select * from tsm.state_machine_state_transitions where sm_id = $1",
 	"setInstanceNewState": "update tsm.instances set sm_state = $1 where id = $2",
 	"addTransitionHistory": "insert into tsm.instance_history (instance_id, sm_state, transition_name, transition_made_by, comment) values ($1, $2, $3, $4, $5)",
 	"getInstanceHistory": "select * from tsm.instance_history where instance_id = $1 order by id desc"

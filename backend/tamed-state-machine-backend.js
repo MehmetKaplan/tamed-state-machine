@@ -101,9 +101,10 @@ const initiateInstance = (externalName, externalId, smName, generatedBy) => new 
 
 		await runSQL(poolName, sqls.addTransitionHistory, [instanceId, initialState, 'instance initiated', generatedBy, 'instance initiated']);
 
+		let possibleTransitions = await runSQL(poolName, sqls.getPossibleTransitions, [smId, initialState]);
 		return resolve({
 			result: 'OK',
-			payload: undefined,
+			payload: possibleTransitions.rows,
 		});
 	} catch (error) /* istanbul ignore next */{
 		return reject(error);
@@ -156,9 +157,14 @@ const transitionInstance = (externalName, externalId, smName, transitionName, tr
 
 		await runSQL(poolName, sqls.setInstanceNewState, [toState, instanceId]);
 		await runSQL(poolName, sqls.addTransitionHistory, [instanceId, toState, transitionName, transitionMadeBy, comment]);
+
+		const smFN = await smIdFromName(smName);
+		const smId = smFN.payload;
+		let possibleTransitions2 = await runSQL(poolName, sqls.getPossibleTransitions, [smId, toState]);
+
 		return resolve({
 			result: 'OK',
-			payload: undefined,
+			payload: possibleTransitions2.rows,
 		});
 	} catch (error) /* istanbul ignore next */ {
 		return reject(error);
@@ -180,6 +186,20 @@ const getInstanceHistory = (externalName, externalId, smName) => new Promise(asy
 	}
 });
 
+const getAllPossibleTransitions = (smName) => new Promise(async (resolve, reject) => {
+	try {
+		const smFN = await smIdFromName(smName);
+		const smId = smFN.payload;
+		const allPossibleTransitions = await runSQL(poolName, sqls.getAllPossibleTransitions, [smId]);
+		return resolve({
+			result: 'OK',
+			payload: allPossibleTransitions.rows,
+		});
+	} catch (error) {
+		return reject(error);
+	}
+});
+
 module.exports = {
 	init: init,
 	testHandler: testHandler,
@@ -189,6 +209,7 @@ module.exports = {
 	getPossibleTransitions: getPossibleTransitions,
 	transitionInstance: transitionInstance,
 	getInstanceHistory: getInstanceHistory,
+	getAllPossibleTransitions: getAllPossibleTransitions,
 	exportedForTesting: {
 		poolInfoForTests: poolInfoForTests,
 		smIdFromName: smIdFromName,
