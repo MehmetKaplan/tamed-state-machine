@@ -15,12 +15,12 @@ For the DB setup follow [the steps mentioned here](./database-setup/README.md).
 #### 2. Prepare Backend
 
 MODIFYME
-For setting up the fundementals of the backend follow [the steps mentioned here](./backend/README.md).
+For setting up the fundamentals of the backend follow [the steps mentioned here](./backend/README.md).
 
 #### 3. Prepare Frontend
 
 MODIFYME
-The frontend functions are handlers that can be embedded into react, react-native or expo applications. For setting up the fundementals of the frontend follow [the steps mentioned here](./frontend/README.md).
+The frontend functions are handlers that can be embedded into react, react-native or expo applications. For setting up the fundamentals of the frontend follow [the steps mentioned here](./frontend/README.md).
 
 ### License
 

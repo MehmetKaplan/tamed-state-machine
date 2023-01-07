@@ -1,8 +1,9 @@
 {
 	"name": "tamed-state-machine-backend",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "The backend library for the tamed-state-machine",
 	"repository": "https://github.com/MehmetKaplan/tamed-state-machine",
+	"main": "tamed-state-machine-backend.js",
 	"author": "Mehmet Kaplan",
 	"license": "MIT",
 	"private": false,

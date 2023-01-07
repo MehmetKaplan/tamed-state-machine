@@ -1,0 +1,20 @@
+{
+	"name": "serial-entrepreneur-frontend",
+	"version": "1.2.3",
+	"description": "The frontend functions to handle the serial-entrepreneur functionalities.",
+	"main": "serial-entrepreneur-frontend.js",
+	"repository": "https://github.com/MehmetKaplan/serial-entrepreneur/blob/master/frontend",
+	"author": "Mehmet Kaplan",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+		"test": "jest --runInBand --coverage --no-cache --forceExit "
+	},
+	"dependencies": {
+		"fetch-lean": "^1.0.5",
+		"tick-log": "^1.1.4"
+	},
+	"devDependencies": {
+		"jest": "^29.2.2"
+	}
+}
