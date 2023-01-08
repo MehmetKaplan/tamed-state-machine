@@ -195,7 +195,7 @@ const getAllPossibleTransitions = (smName) => new Promise(async (resolve, reject
 			result: 'OK',
 			payload: allPossibleTransitions.rows,
 		});
-	} catch (error) {
+	} catch (error) /* istanbul ignore next */ {
 		return reject(error);
 	}
 });
