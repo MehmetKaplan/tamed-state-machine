@@ -171,9 +171,50 @@ test('getInstance', async () => {
 	await tamedStateMachineFrontendHandlers.getInstance(testExternalName, externalID, testStateMachineName, fSuccess2, fFail2)
 });
 
+test('deleteInstance', async () => {
+	let externalID = `FE-${new Date().getTime()}-${commonId++}`;
+	const fSuccess = (props, retval) => {
+		tickLog.success(`getInstance test step 1 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
+		expect(retval.payload.length).toBe(1);
+	}
+	const fFail = (props, e) => {
+		tickLog.error(`getInstance test failed at step 1`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
+		expect(true).toBe(false);
+	}
+	await tamedStateMachineFrontendHandlers.initiateInstance(testExternalName, externalID, testStateMachineName, testGeneratedBy, fSuccess, fFail);
+
+	const fSuccess2 = (props, retval) => {
+		tickLog.success(`deleteInstance test step 2 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
+	}
+	const fFail2 = (props, e) => {
+		tickLog.error(`deleteInstance test failed at step 2`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
+		expect(true).toBe(false);
+	}
+	await tamedStateMachineFrontendHandlers.deleteInstance(testExternalName, externalID, testStateMachineName, fSuccess2, fFail2)
+
+	try {
+		const fSuccess3 = (props, retval) => {
+			tickLog.error(`Get instance succeeded where it should NOT.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
+			expect(true).toBe(false); // Should not come here
+		}
+		const fFail3 = (props, e) => {
+			// Will be called but nothing special to be done
+			tickLog.success(`Get instance failed as expected.\nprops: ${JSON.stringify(props, null, '  ')}`, true);
+		}
+		tickLog.info("***********************************************", true)
+		tickLog.info("IT IS NORMAL THE BACKEND CALL TO FAIL HERE", true)
+		await tamedStateMachineFrontendHandlers.getInstance(testExternalName, externalID, testStateMachineName, fSuccess3, fFail3);
+	} catch (e) {
+		tickLog.success(`Expected Error: ${JSON.stringify(e, null, '  ')}`, true);
+		tickLog.info("***********************************************", true)
+		expect(e.error).toBe("No instance found.");
+	}
+});
 /*
-	getInstance: getInstance,
-	initiateInstance: initiateInstance,
 	deleteInstance: deleteInstance,
 	getPossibleTransitions: getPossibleTransitions,
 	getInstanceHistory: getInstanceHistory,
