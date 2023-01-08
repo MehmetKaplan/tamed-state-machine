@@ -3,6 +3,14 @@
 One of the frequently encountered problems in software development is the need to handle the state machines. Even though the state machine concept is straight forward, handling them is usually hard and open to errors, considering possible points that require intensive care. In order to reduce this repetitive work of handling state machines with the needed intensive care, this project was created. 
 
 This project is a state machine handler that is based on a PostgresSQL database. The state machine is defined in the database and the code that handles it is generated from the database. *Please note, this library is **not** a state machine visualization library.*
+
+The functions of this library can be comprehended best by walking through a working example because there are 3 distinct parts that need to be understood:
+- Database (state machine configuration)
+- Backend (state machine info exposure)
+- Frontend (the application interface that use the state machine information).
+
+A working example is described [here](./example/README.md).
+
 ### Requirements
 
 1. An Ubuntu server with `bash` shell.
@@ -28,7 +36,7 @@ For setting up the fundamentals of the frontend follow [the steps mentioned here
 
 ### Example
 
-For a better understanding of how to use this library, please refer to the [example](./example/README.md).
+For a better understanding of how to use this library, please refer to [this example](./example/README.md).
 ### License
 
 The license is MIT and full text [here](LICENSE).
