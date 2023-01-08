@@ -297,5 +297,5 @@ await tamedStateMachineFrontendHandlers.getInstanceHistory(testExternalName, ext
 
 You may find our internal code that we used to test the library useful as well:
 
-* Backend: You can find the full example backend code in the [tamed-state-machine-backend-example](./backend/tamed-state-machine-backend-example).
-* Frontend: You can find a simulation of a frontend application as a `Jest` test suite [here](../frontend/__tests__/tamed-state-machine-frontend.test.js).
+* Backend: You can find the full example backend code in the [tamed-state-machine-backend-example](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/backend/tamed-state-machine-backend-example).
+* Frontend: You can find a simulation of a frontend application as a `Jest` test suite [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/frontend/__tests__/tamed-state-machine-frontend.test.js).

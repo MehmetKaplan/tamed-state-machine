@@ -36,7 +36,7 @@ This table holds the states and description of the state machines.
 
 This table holds the transitions between states and the task pointers to be executed before and after the transition.
 
-The task pointers are the names of the JavaScript functions of your frontend application. The `tamed-state-machine-frontend` module will call these functions with the following parameters ***automatically*** as defined in the [tamed-state-machine-frontend](../frontend/README.md) module:
+The task pointers are the names of the JavaScript functions of your frontend application. The `tamed-state-machine-frontend` module will call these functions with the following parameters ***automatically*** as defined in the [tamed-state-machine-frontend](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/frontend/README.md) module:
 
 * pre_transition_task_name: The function name in the frontend application that is to be called before the transition.
 * post_transition_task_name: The function name in the frontend application that is to be called after the transition.
@@ -54,7 +54,7 @@ The task pointers are the names of the JavaScript functions of your frontend app
 
 ### Example
 
-For a better understanding of how to use this library, please refer to [this example](../example/README.md).
+For a better understanding of how to use this library, please refer to [this example](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/example/README.md).
 
 ### License
 

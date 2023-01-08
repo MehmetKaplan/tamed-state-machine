@@ -8,7 +8,7 @@ Altogether these libraries give a generic method to handle most state machine re
 
 The frontend functions are handlers that can be embedded into any client application that connects to the backend. This can be a real frontend app like the ones written with, react, react-native or expo. On the other hand there is no limitation for this library for frontend to be a presentation layer. That's why it can also be a backend node application as well. 
 
-One of the important features of this library is that it helps you to call pre and post functions just before and right after state machine transitions. The pre and post functions are your frontend application's functions and their names are defined in the database as described in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md).
+One of the important features of this library is that it helps you to call pre and post functions just before and right after state machine transitions. The pre and post functions are your frontend application's functions and their names are defined in the database as described in the [state machine configuration manual](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/README-SM-CONFIG.md).
 
 **Note:** *Whenever the database is modified with new state machines, states, transitions, etc, the backend server will be able to read and use the definitions since we do not cache the state machine configurations. The rationale behind this is that we do not want to restart the backend server each time a new state machine is defined.*
 
@@ -27,7 +27,7 @@ yarn add tamed-state-machine-frontend
 2. Include the `tamed-state-machine-frontend` library in your project.
 
 ```javascript
-const tamedStateMachineFrontendHandlers = require('../tamed-state-machine-frontend');
+const tamedStateMachineFrontendHandlers = require('https://github.com/MehmetKaplan/tamed-state-machine/blob/master/tamed-state-machine-frontend');
 ```
 3. Define the backend url.
 
@@ -70,7 +70,7 @@ tamedStateMachineFrontendHandlers.init({
 
 For all functions (except the `init` function), there are 2 callback functions that should be passed as parameters. These functions are `successCallback` and `failCallback`. These functions are called when the function is successful or not successful respectively with following parameters:
   * `props`: the data that is posted to the backend
-  * `retval`: the data that is returned from the backend. The details are as described in the **API** section of the [`tamed-state-machine-backend` library](../backend/README.md). You can refer to `Returns` subsection for each route.
+  * `retval`: the data that is returned from the backend. The details are as described in the **API** section of the [`tamed-state-machine-backend` library](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/backend/README.md). You can refer to `Returns` subsection for each route.
 
 #### `init`
 
@@ -90,7 +90,7 @@ This function should be called before any other function. It initializes the lib
 
 `preFunctions` and `postFunctions` should have following format:
 
-The below `Key for "Function Name"` is the name of the function that will be called before or after the transition. It is configured in the database as stated in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md).
+The below `Key for "Function Name"` is the name of the function that will be called before or after the transition. It is configured in the database as stated in the [state machine configuration manual](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/README-SM-CONFIG.md).
 
 | Key | Type | Description |
 | --- | --- | --- |
@@ -189,7 +189,7 @@ Deletes the state machine instance.
 
 ### Example
 
-For a better understanding of how to use this library, please refer to [this example](../example/README.md).
+For a better understanding of how to use this library, please refer to [this example](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/example/README.md).
 
 ### License
 
@@ -197,6 +197,6 @@ The license is MIT and full text [here](LICENSE).
 
 #### Used Modules
 
-* tick-log license [here](../OtherLicenses/tick-log.txt)
-* tamed-pg license [here](../OtherLicenses/tamed-pg.txt)
-* fetch-lean license [here](../OtherLicenses/fetch-lean.txt)
+* tick-log license [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/OtherLicenses/tick-log.txt)
+* tamed-pg license [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/OtherLicenses/tamed-pg.txt)
+* fetch-lean license [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/OtherLicenses/fetch-lean.txt)

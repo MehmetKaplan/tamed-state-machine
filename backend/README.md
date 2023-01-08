@@ -8,7 +8,7 @@ As a general rule this association is defined by following 3 parameters, which y
 
 1. `externalName` - Connection to your application. This information is valuable for you, it defines which application you are connecting. The value is free text and `tamed-state-machine` keeps it for your association. (For example if you are implementing a document approval process, this is the name of the application that you are implementing the process for).
 2. `externalId` - Connection to your application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the **internal id of the document in your application**).
-3. `smName` - Name of the state machine that is configured within the database. In order to see how the state machines can be configured, please refer to the [state machine configuration manual](../database-setup/README-SM-CONFIG.md).
+3. `smName` - Name of the state machine that is configured within the database. In order to see how the state machines can be configured, please refer to the [state machine configuration manual](.https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/README-SM-CONFIG.md).
 
 **Note:** *Whenever the database is modified with new state machines, states, transitions, etc, the backend server will be able to read and use the definitions since we do not cache the state machine configurations. The rationale behind this is that we do not want to restart the backend server each time a new state machine is defined.*
 
@@ -65,7 +65,7 @@ const startServer = async () => {
 
 4. Finally start your server. Now the state machine backend is ready to be consumed by the frontend.
 
-5. Each time you need a state machine model configure it in the database as in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md)
+5. Each time you need a state machine model configure it in the database as in the [state machine configuration manual](.https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/README-SM-CONFIG.md)
 
 ### API
 
@@ -235,7 +235,7 @@ If not successful, rejects with an error message.
 
 ### Example
 
-For a better understanding of how to use this library, please refer to [this example](../example/README.md).
+For a better understanding of how to use this library, please refer to [this example](.https://github.com/MehmetKaplan/tamed-state-machine/blob/master/example/README.md).
 
 ### License
 
@@ -243,6 +243,6 @@ The license is MIT and full text [here](LICENSE).
 
 #### Used Modules
 
-* tick-log license [here](../OtherLicenses/tick-log.txt)
-* tamed-pg license [here](../OtherLicenses/tamed-pg.txt)
-* fetch-lean license [here](../OtherLicenses/fetch-lean.txt)
+* tick-log license [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/OtherLicenses/tick-log.txt)
+* tamed-pg license [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/OtherLicenses/tamed-pg.txt)
+* fetch-lean license [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/OtherLicenses/fetch-lean.txt)
