@@ -48,13 +48,15 @@ beforeAll(async () => {
 
 // jest.setTimeout(20000)
 
-test('Test testHandler', async () => {
+test('testHandler', async () => {
 	const fSuccess = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`testHandler test backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval).toBeTruthy();
 	}
-	const fFail = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail = (props, e) => {
+		tickLog.error(`testHandler test failed`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.testHandler('This is the TEST field', fSuccess, fFail);
@@ -63,11 +65,13 @@ test('Test testHandler', async () => {
 test('initiateInstance', async () => {
 	let externalID = `FE-${new Date().getTime()}-${commonId++}`;
 	const fSuccess = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`initiateInstance test backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload.length).toBe(1);
 	}
-	const fFail = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail = (props, e) => {
+		tickLog.error(`initiateInstance test failed`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.initiateInstance(testExternalName, externalID, testStateMachineName, testGeneratedBy, fSuccess, fFail);
@@ -76,21 +80,25 @@ test('initiateInstance', async () => {
 test('transition test', async () => {
 	let externalID = `FE-${new Date().getTime()}-${commonId++}`;
 	const fSuccess1 = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`transition test step 1 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload.length).toBe(1);
 	}
-	const fFail1 = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail1 = (props, e) => {
+		tickLog.error(`transition test failed at step 1`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.initiateInstance(testExternalName, externalID, testStateMachineName, testGeneratedBy, fSuccess1, fFail1);
 
 	const fSuccess2 = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`transition test step 2 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload.length).toBe(2);
 	}
-	const fFail2 = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail2 = (props, e) => {
+		tickLog.error(`transition test failed at step 2`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.transitionInstance(testExternalName, externalID, testStateMachineName, 'Submit', testGeneratedBy, 'Frontend - transition test', undefined, fSuccess2, fFail2);
@@ -102,62 +110,67 @@ test('transition pre and post action test', async () => {
 
 	let externalID = `FE-${new Date().getTime()}-${commonId++}`;
 	const fSuccess1 = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`transition pre and post action test step 1 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload.length).toBe(1);
 		possibleTransitions = retval.payload;
 	}
-	const fFail1 = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail1 = (props, e) => {
+		tickLog.error(`transition pre and post action test failed at step 1`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.initiateInstance(testExternalName, externalID, testStateMachineName, testGeneratedBy, fSuccess1, fFail1);
 
 	const fSuccess2 = (props, retval) => {
-		// tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`transition pre and post action test step 2 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload.length).toBe(2);
 	}
-	const fFail2 = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail2 = (props, e) => {
+		tickLog.error(`transition pre and post action test failed at step 2`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	let result = await tamedStateMachineFrontendHandlers.transitionInstance(testExternalName, externalID, testStateMachineName, 'Submit', testGeneratedBy, 'Frontend - transition test', possibleTransitions, fSuccess2, fFail2);
-	tickLog.info(`result: ${JSON.stringify(result, null, ' ')}`, true);
+	tickLog.info(`Frontend transitionInstance result (should include pre and post function call results): ${JSON.stringify(result, null, ' ')}`, true);
 	expect(result.preFuncResult).toBe("preSubmit is called");
 	expect(result.postFuncResult).toBe("postSubmit is called");
 });
 
-/*
-TODO: Correct this test
 test('getInstance', async () => {
 	let externalID = `FE-${new Date().getTime()}-${commonId++}`;
 	const fSuccess = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`getInstance test step 1 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload.length).toBe(1);
 	}
-	const fFail = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail = (props, e) => {
+		tickLog.error(`getInstance test failed at step 1`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.initiateInstance(testExternalName, externalID, testStateMachineName, testGeneratedBy, fSuccess, fFail);
 
 	const fSuccess2 = (props, retval) => {
-		//tickLog.info(`fSuccess: ${JSON.stringify(props)} ${JSON.stringify(retval)}`, true);
+		tickLog.success(`getInstance test step 2 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
 		expect(retval.payload).toMatchObject(
 			{
 				"external_name": testExternalName,
 				"external_id": externalID,
-				"valid": "Y", 
+				"valid": "Y",
 			}
-
 		);
 	}
-	const fFail2 = (props, error) => {
-		tickLog.error(`fFail: ${JSON.stringify(props)} ${JSON.stringify(error)}`, true);
+	const fFail2 = (props, e) => {
+		tickLog.error(`getInstance test failed at step 2`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
 		expect(true).toBe(false);
 	}
 	await tamedStateMachineFrontendHandlers.getInstance(testExternalName, externalID, testStateMachineName, fSuccess2, fFail2)
 });
-*/
+
 /*
 	getInstance: getInstance,
 	initiateInstance: initiateInstance,

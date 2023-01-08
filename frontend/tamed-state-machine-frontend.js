@@ -22,22 +22,22 @@ const init = (p_params) => new Promise(async (resolve, reject) => {
 
 // template for all calls to the backend
 const tamedStateMachineBackendCall = (method, route, props, successCallback, failCallback) => new Promise(async (resolve, reject) => {
-	let l_retval;
+	let retVal;
 	let l_url = `${keys.apiBackend}/${route}`;
 	if (debugMode) tickLog.start(`tamedStateMachineBackendCall ${method} ${l_url}`);
 	try {
-		l_retval = await fetchLean(method, l_url, {}, props);
-		if (l_retval.result === 'OK') {
-			successCallback(props, l_retval);
-			return resolve(l_retval);
+		retVal = await fetchLean(method, l_url, {}, props);
+		if (retVal.result === 'OK') {
+			successCallback(props, retVal);
+			return resolve(retVal);
 		};
-		failCallback(props, l_retval);
-		return reject(l_retval);
-	} catch (error) /* istanbul ignore next */ {
-		tickLog.error(`tamedStateMachineBackendCall failed. method: ${method}, route: ${route}, error: ${JSON.stringify(error)}`);
-		if (debugMode) tickLog.error(`props: ${JSON.stringify(props)}`);
-		failCallback(props, error);
-		return reject(error);
+		failCallback(props, retVal);
+		return reject(retVal);
+	} catch (e) /* istanbul ignore next */ {
+		tickLog.error(`tamedStateMachineBackendCall failed.\nMethod: ${method}\nRoute: ${route}\nretVal:${JSON.stringify(retVal, null, '  ')}\nError: ${JSON.stringify(e, null, '  ')}`);
+		if (debugMode) tickLog.error(`props: ${JSON.stringify(props, null, '  ')}`);
+		failCallback(props, e);
+		return reject(e);
 	}
 });
 
