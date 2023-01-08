@@ -1,332 +1,200 @@
-MODIFYME
+## WHY?
 
-## SETUP - FRONTEND
+This is the frontend part of the `tamed-state-machine` library. For full setup please refer to https://github.com/MehmetKaplan/tamed-state-machine.
 
-This is the frontend part of the `serial-entrepreneur` library. For full setup please refer to https://github.com/MehmetKaplan/serial-entrepreneur.
+This, `tamed-state-machine-frontend` library, is a set of functions that communicate with a backend that utilize `tamed-state-machine-backend` library to expose the state machine functionality. 
 
-Following steps should lead you to prepare a proper frontend setup for the `serial-entrepreneur`. This frontend functions are designed to be pre-integrated with the backend functions out of the box, provided the setup steps are followed and a backend server, as shown in the backend library example, is run.
+Altogether these libraries give a generic method to handle most state machine related tasks' handling.
 
-Add the pure JavaScript handlers into your frontend code. (*)
+The frontend functions are handlers that can be embedded into any client application that connects to the backend. This can be a real frontend app like the ones written with, react, react-native or expo. On the other hand there is no limitation for this library for frontend to be a presentation layer. That's why it can also be a backend node application as well. 
+
+One of the important features of this library is that it helps you to call pre and post functions just before and right after state machine transitions. The pre and post functions are your frontend application's functions and their names are defined in the database as described in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md).
+
+**Note:** *Whenever the database is modified with new state machines, states, transitions, etc, the backend server will be able to read and use the definitions since we do not cache the state machine configurations. The rationale behind this is that we do not want to restart the backend server each time a new state machine is defined.*
+
+You can use the following functions defined in the **API** section to present state machine to your end users.
+
+**IMPORTANT: This library does not focus on the authorization. It should be handled separately.**
+
+## SETUP
+
+1. Add the request handlers as a dependency of your project.
 
 ```bash
-yarn add serial-entrepreneur-frontend
+yarn add tamed-state-machine-frontend
 ```
 
-These pure JavaScript functions are designed to take the required parameters and additionally 2 functions, success and fail callbacks. With these callbacks you can use these functions within your frontend  button handlers.
+2. Include the `tamed-state-machine-frontend` library in your project.
 
-0. Introduce the API backend and if reuired the debug mode.
-   
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	serialEntrepreneurFrontendHandlers.init({
-		apiBackend: apiBackend, // https://.....
-		debugMode: false, // never keep this value true in production
-	});
-	```
+```javascript
+const tamedStateMachineFrontendHandlers = require('../tamed-state-machine-frontend');
+```
+3. Define the backend url.
 
-1. Implement the [Register User] flow
+```javascript
+const apiBackend = 'http://...'; // modify this with your backend that utilize the tamed-state-machine-backend library
+```
 
-	The [Register User] flow needs to have 2 steps. 
-	
-	1. Collect credentials and the minimum personal information from users.  
-   
-		The `serial-entrepreneur` gives you only these essential 3 information out of the box. In order to add additional information you'll need to enrich the `users` table in the database and add an initial page to collect those data. As a general principle, the less information you collect, the higher chance to comply with the privacy laws.
-   		- name
-         - email
-         - password
+4. Define your pre transition and post transition functions. 
 
-		Once we collect them, we'll need `serial-entrepreneur-backend` to send a confirmation mail to the mail address, with a confirmation code.
+```javascript
+const pre1 = (props) => { return "preSubmit is called" }
+const pre2 = (props) => { return "preSubmit is called" }
+...
+const post1 = (props) => { return "preSubmit is called" }
+const post2 = (props) => { return "preSubmit is called" }
+...
+```
 
-		You can use following functions in your [Register User] page within the related submit button handler.
-		```javascript
-		const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-		...
+5. Register your pre and post transition functions and backend API to the library.
 
-		// in your button's related event handler
-		const fSuccess = (props, retval) => {
-			// HANDLE YOUR SUCCESS CODE HERE
-		}
-		const fFail = (props, error) => {
-			// HANDLE YOUR FAIL CODE HERE
-		}
-		await serialEntrepreneurFrontendHandlers.registerUserStep1(name, middlename, lastname, email, password, birthdate, gender, fSuccess, fFail);
-		```
-		#### `registerUserStep1` API
-
-		| parameter | description |
-		|-----------|-------------|
-		| name | The name of the user |
-		| middlename | The middle name of the user |
-		| lastname | The last name / surname of the user |
-		| email | The email that is to be registered |
-		| password | The password that will be used while registering if the email is succesfully confirmed in the next step |
-		| birthdate | The birth date of the user |
-		| gender | The gender of the user |
-		| fSuccess | callback to be called in success case |
-		| fFail | callback to be called in fail case |
-
-	2. Confirm the email.
- 
-	   Assuming the `serial-entrepreneur-backend` sent a confirmation mail to the mail address, next we need to verify the confirmation code which implies the mail is really owned by the user. If the user provides the correct confirmation code, the `serial-entrepreneur-backend` should save the user information to the database.
-
-		You can use following functions in your [Confirmation Code Verification] page within the related submit button handler.
-		```javascript
-		const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-		...
-
-		// in your button's related event handler
-		const fSuccess = (props, retval) => {
-			// HANDLE YOUR SUCCESS CODE HERE
-		}
-		const fFail = (props, error) => {
-			// HANDLE YOUR FAIL CODE HERE
-		}
-		await serialEntrepreneurFrontendHandlers.registerUserStep2(email, confirmationCode, fSuccess, fFail);
-		```
-
-		#### `registerUserStep2` API
-
-		| parameter | description |
-		|-----------|-------------|
-		| email | The email that is to be registered |
-		| confirmationCode | The confirmation code that the email recieved after the previous step<br>This code verifies the ownership of the mail |
-		| fSuccess | callback to be called in success case |
-		| fFail | callback to be called in fail case |
-
-
-2. Implement the [Login] flow
-
-	When a user succesfully registers, she/he should be able to login. For this we need to collect the email and password from the user and test if the credentials are correct. And if they are correct, we'll need to generate and store a `JWT` so that next time login is seamless for the user. Please check the `fSuccess` function in the below example in order to observe how the JWT can be obtained from the backend call response.
-
-	You can use following functions in your [Login] page within the related submit button handler.
-	
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	...
-
-	// in your button's related event handler
-	const fSuccess = (props, retval) => {
-		// HANDLE YOUR SUCCESS CODE HERE
-		let curJWT = retval.payload.token;
-		// SAVE THE curJWT FOR NEXT LOGIN
+```javascript
+tamedStateMachineFrontendHandlers.init({
+	apiBackend: apiBackend,
+	preFunctions: {
+		"pre1": pre1
+		"pre2": pre2
+	},
+	postFunctions: {
+		"post1": post1
+		"post2": post2
 	}
-	const fFail = (props, error) => {
-		// HANDLE YOUR FAIL CODE HERE
-	}
-	await serialEntrepreneurFrontendHandlers.loginUserViaMail(email, password, fSuccess, fFail);
-	```
-	#### `loginUserViaMail` API
+});
+```
 
-	| parameter | description |
-	|-----------|-------------|
-	| email | The email that claims the login |
-	| password | The password that authenticate the email |
-	| fSuccess | callback to be called in success case |
-	| fFail | callback to be called in fail case |
+6. Now the state machine frontend is ready to be consumed by your application.
 
-3. Implement the [Seamless Login] flow
+### API
 
-	If the user logged in successfully and chose the "remember me" option, next time when she/he is logging in there should not be a need to collect credentials once again. And this is accomplished by saving the token when the user first logged in and refreshing it in each authentication event. Please check the `fSuccess` function in the below example in order to observe how the JWT can be obtained from the backend call response.
+For all functions (except the `init` function), there are 2 callback functions that should be passed as parameters. These functions are `successCallback` and `failCallback`. These functions are called when the function is successful or not successful respectively with following parameters:
+  * `props`: the data that is posted to the backend
+  * `retval`: the data that is returned from the backend. The details are as described in the **API** section of the [`tamed-state-machine-backend` library](../backend/README.md). You can refer to `Returns` subsection for each route.
 
-	You can use following functions in your [root (App.js)] page within the related life cycle (on load) handler or hook (useEffect).
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	...
+#### `init`
 
-	// in your button's related event handler
-	const fSuccess = (props, retval) => {
-		// HANDLE YOUR SUCCESS CODE HERE
-		let curJWT = retval.payload.token;
-		// SAVE (OVERWRITE) THE curJWT FOR NEXT LOGIN
-	}
-	const fFail = (props, error) => {
-		// HANDLE YOUR FAIL CODE HERE
-	}
-	await serialEntrepreneurFrontendHandlers.loginUserViaToken(token, fSuccess, fFail);
-	```
-	#### `loginUserViaToken` API
+This function should be called before any other function. It initializes the library with the backend url and pre and post transition functions.
 
-	| parameter | description |
-	|-----------|-------------|
-	| token | The token that certifies the user |
-	| fSuccess | callback to be called in success case |
-	| fFail | callback to be called in fail case |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| p_params | Object | The object that contains the backend url and pre and post transition functions. |
 
-4. Implement the [Password Reset] flow
+`p_params` should have following format:
 
-	One of the common functions to implement is the password reset, when a user completely forgets a password. Ownership of the registration email implies the ownership of the account, hence we want to provide a method for users to reset their passwords.
+| Key | Type | Description |
+| --- | --- | --- |
+| apiBackend | String | The backend url. |
+| preFunctions | Object | The object that contains the pre transition functions. |
+| postFunctions | Object | The object that contains the post transition functions. |
 
-	This can be accomplished by 2 steps, similar to the registration flow.
+`preFunctions` and `postFunctions` should have following format:
 
-	1. Get the password reset request.
+The below `Key for "Function Name"` is the name of the function that will be called before or after the transition. It is configured in the database as stated in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md).
 
-		Collect the `email` for this purpose and generate a confirmation code at the backend for this request.
+| Key | Type | Description |
+| --- | --- | --- |
+| Key for "Function Name" | Function | The function that will be called before or after the transition. |
 
-		You can use following functions in your [Forgot Password] page within the related submit button handler.
-		```javascript
-		const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-		...
+###### Returns
 
-		// in your button's related event handler
-		const fSuccess = (props, retval) => {
-			// HANDLE YOUR SUCCESS CODE HERE
-		}
-		const fFail = (props, error) => {
-			// HANDLE YOUR FAIL CODE HERE
-		}
-		await serialEntrepreneurFrontendHandlers.resetPasswordStep1(email, fSuccess, fFail);
-		```
-		#### `resetPasswordStep2` API
+If successful, resolves to `true`
+If not successful, rejects with an error message.
 
-		| parameter | description |
-		|-----------|-------------|
-		| email | The email for which the password to be updated<br>This email is to recieve the confirmation code |
-		| fSuccess | callback to be called in success case |
-		| fFail | callback to be called in fail case |
+#### `initiateInstance`
 
-	2. Check the confirmation code in order to verify the email ownership.
+Initializes a state machine instance. This instance is association between your application and a configured state machine.
 
-		You can use following functions in your [Forgot Password Confirmation Code Verification] page within the related submit button handler.
-		```javascript
-		const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-		...
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that is configured within the database. |
+| generatedBy| String | The user that initiated the state machine. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+#### `getInstance`
 
-		// in your button's related event handler
-		const fSuccess = (props, retval) => {
-			// HANDLE YOUR SUCCESS CODE HERE
-		}
-		const fFail = (props, error) => {
-			// HANDLE YOUR FAIL CODE HERE
-		}
-		await serialEntrepreneurFrontendHandlers.resetPasswordStep2(email, confirmationCode, newPassword, fSuccess, fFail);
-		```
-		#### `resetPasswordStep2` API
+Gets the instance of the state machine. This instance is association between your application and a configured state machine.
 
-		| parameter | description |
-		|-----------|-------------|
-		| email | The email for which the password to be updated |
-		| confirmationCode | The confirmation code that was sent to the email at previous step |
-		| newPassword | The new password to be updated |
-		| fSuccess | callback to be called in success case |
-		| fFail | callback to be called in fail case |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that is being queried. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
 
-5. Implement the [Change Password] flow
+#### `getPossibleTransitions`
 
-	We need to provide a method for the users to be able to change their users. For this purpose, we'll need to get the old password which justifies the users ownership of the account.
+Finds the state machine instance and returns the possible transitions for the current state.
 
-	You can use following functions in your [Change Password] page within the related submit button handler.
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	...
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the current state transitions are being queried. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
 
-	// in your button's related event handler
-	const fSuccess = (props, retval) => {
-		// HANDLE YOUR SUCCESS CODE HERE
-	}
-	const fFail = (props, error) => {
-		// HANDLE YOUR FAIL CODE HERE
-	}
-	await serialEntrepreneurFrontendHandlers.changePassword(token, oldPassword, newPassword, fSuccess, fFail);
-	```
-	#### `changePassword` API
+#### `transitionInstance`
 
-	| parameter | description |
-	|-----------|-------------|
-	| token | The valid JWT of the user |
-	| oldPassword | The old password to authenticate the user |
-	| newPassword | The new password to be updated |
-	| fSuccess | callback to be called in success case |
-	| fFail | callback to be called in fail case |
+Finds the state machine instance and performs the desired transition.
 
-6. Implement the [User Data Update] flow
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the state is requested to be transitioned. |
+| transitionName| String | Name of the transition that is being requested. |
+| transitionMadeBy| String | The user that requested the transition. |
+| comment| String | Comment for the transition for instance history. |
+| possibleTransitions | Array | Array of possible transitions for the current state. This should be obtained prior to calling `transitionInstance` from previous `transitionInstance` or `initiateInstance` calls. If this value is provided, the pre and post functions are called. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
 
-	As stated previously the `serial-entrepreneur` collects as minimum data as possible from users. By default these data are `email` and `name` (a free text to keep whole name). In order to enrich the collected data the backend table should be added new columns. And those data should be updated seperately. But for the sake of the out of the box functionality `serial-entrepreneur` gives the update of the name field.
-	
-	You can use following functions in your [User Data Update] page within the related submit button handler.
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	...
+#### `getInstanceHistory`
 
-	// in your button's related event handler
-	const fSuccess = (props, retval) => {
-		// HANDLE YOUR SUCCESS CODE HERE
-	}
-	const fFail = (props, error) => {
-		// HANDLE YOUR FAIL CODE HERE
-	}
-	await serialEntrepreneurFrontendHandlers.updateUserData(token, newName, newmiddlename, newlastname, newbirthdate, newGender, fSuccess, fFail);
-	```
-	#### `updateUserData` API
+Finds the state machine instance and returns the history of the transitions.
 
-	| parameter | description |
-	|-----------|-------------|
-	| token | The token that verifies the user |
-	| newName | The new name to be updated |
-	| newmiddlename | The new middle name to be updated |
-	| newlastname | The new last name to be updated |
-	| newbirthdate | The new birth date to be updated |
-	| newGender | The new gender to be updated |
-	| fSuccess | callback to be called in success case |
-	| fFail | callback to be called in fail case |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the history is being queried. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
 
-7. Implement the [Remove User] flow
+#### `getAllPossibleTransitions`
 
-	In order to comply with some of the data privacy laws, we need to provide a method for users to completely remove their data. For this purpose we provide the user removing functionality.
+Gives the state machine transition configurations.
 
-	You can use following functions in your [Remove User] page within the related submit button handler.
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	...
+| Parameter | Type | Description |
+| --- | --- | --- |
+| smName| String | Name of the state machine that the transitions are being queried. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
 
-	// in your button's related event handler
-	const fSuccess = (props, retval) => {
-		// HANDLE YOUR SUCCESS CODE HERE
-	}
-	const fFail = (props, error) => {
-		// HANDLE YOUR FAIL CODE HERE
-	}
-	await serialEntrepreneurFrontendHandlers.removeUser(email, token, fSuccess, fFail);
-	```
-	#### `removeUser` API
+#### `deleteInstance`
 
-	| parameter | description |
-	|-----------|-------------|
-	| email | The email that is to be removed |
-	| token | The token that verifies the user |
-	| fSuccess | callback to be called in success case |
-	| fFail | callback to be called in fail case |
+Deletes the state machine instance.
 
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the instance is being deleted. |
+| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
+|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
 
-7. Implement the [Get User Data] flow
+### Example
 
-	You can use following functions in your [User Data] page within the related submit button handler.
-	```javascript
-	const serialEntrepreneurFrontendHandlers = require('serial-entrepreneur-frontend');
-	...
+For a better understanding of how to use this library, please refer to [this example](../example/README.md).
 
-	// in your button's related event handler
-	const fSuccess = (props, retval) => {
-		// HANDLE YOUR SUCCESS CODE HERE
-		console.log(JSON.stringify(retval))
-	}
-	const fFail = (props, error) => {
-		// HANDLE YOUR FAIL CODE HERE
-	}
-	await serialEntrepreneurFrontendHandlers.getUserData(token, fSuccess, fFail);
-	```
-	#### `getUserData` API
+### License
 
-	| parameter | description |
-	|-----------|-------------|
-	| token | The token that verifies the user |
-	| fSuccess | callback to be called in success case |
-	| fFail | callback to be called in fail case |
+The license is MIT and full text [here](LICENSE).
 
+#### Used Modules
 
-### Integration with Popular Authentication Providers
-
-On top of our mail based authentication, `expo` has wonderful integrations with common authentication providers. We strongly encourage you to check and use them from the following link: https://docs.expo.dev/guides/authentication/#guides
-
-
-(*)
-**Note**: Most modern frontend frameworks handle the `fetch` functionality. So we assumed it already exists. If you want to use the fuctions with `node.js` (for example for automated tests), be sure to use with version >= 18 where `fetch` is shipped by default.
+* tick-log license [here](../OtherLicenses/tick-log.txt)
+* tamed-pg license [here](../OtherLicenses/tamed-pg.txt)
+* fetch-lean license [here](../OtherLicenses/fetch-lean.txt)

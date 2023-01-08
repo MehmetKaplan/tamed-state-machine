@@ -42,9 +42,3 @@ For a better understanding of how to use this library, please refer to [this exa
 
 The license is MIT and full text [here](LICENSE).
 
-#### Used Modules
-
-* tick-log license [here](./OtherLicenses/tick-log.txt)
-* tamed-pg license [here](./OtherLicenses/tamed-pg.txt)
-* fetch-lean license [here](./OtherLicenses/fetch-lean.txt)
-

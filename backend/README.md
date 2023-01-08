@@ -16,94 +16,6 @@ Once these functions are exposed as a backend server, they can be consumed by th
 
 **IMPORTANT: This library does not focus on the authorization. It should be handled separately.**
 
-### API
-
-#### `init`
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| p_params | Object | Parameters for the backend server. |
-
-`p_params`
-
-| Key | Type | Value |
-| --- | --- | --- |
-| pgKeys | Object | PostgreSQL connection parameters. |
-| applicationName | String | Application name. Not used, reserved for future. |
-#### `initiateInstance`
-
-Initializes a state machine instance. This instance is association between your application and a configured state machine.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| externalName| String | Connection to an application, here the value is a free-text. |
-| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
-| smName| String | Name of the state machine that is configured within the database. |
-| generatedBy| String | The user that initiated the state machine. |
-
-#### `getInstance`
-
-Gets the instance of the state machine. This instance is association between your application and a configured state machine.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| externalName| String | Connection to an application, here the value is a free-text. |
-| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
-| smName| String | Name of the state machine that is being queried. |
-
-#### `getPossibleTransitions`
-
-Finds the state machine instance and returns the possible transitions for the current state.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| externalName| String | Connection to an application, here the value is a free-text. |
-| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
-| smName| String | Name of the state machine that the current state transitions are being queried. |
-
-#### `transitionInstance`
-
-Finds the state machine instance and performs the desired transition.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| externalName| String | Connection to an application, here the value is a free-text. |
-| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
-| smName| String | Name of the state machine that the state is requested to be transitioned. |
-| transitionName| String | Name of the transition that is being requested. |
-| transitionMadeBy| String | The user that requested the transition. |
-| comment| String | Comment for the transition for instance history. |
-
-#### `getInstanceHistory`
-
-Finds the state machine instance and returns the history of the transitions.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| externalName| String | Connection to an application, here the value is a free-text. |
-| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
-| smName| String | Name of the state machine that the history is being queried. |
-
-#### `getAllPossibleTransitions`
-
-Gives the state machine transition configurations.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| smName| String | Name of the state machine that the transitions are being queried. |
-
-#### `deleteInstance`
-
-Deletes the state machine instance.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| externalName| String | Connection to an application, here the value is a free-text. |
-| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
-| smName| String | Name of the state machine that the instance is being deleted. |
-
-
-
 ### SETUP
 
 1. Add the request handlers as a dependency of your project.
@@ -154,6 +66,172 @@ const startServer = async () => {
 4. Finally start your server. Now the state machine backend is ready to be consumed by the frontend.
 
 5. Each time you need a state machine model configure it in the database as in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md)
+
+### API
+
+#### `init`
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| p_params | Object | Parameters for the backend server. |
+
+`p_params`
+
+| Key | Type | Value |
+| --- | --- | --- |
+| pgKeys | Object | PostgreSQL connection parameters. |
+| applicationName | String | Application name. Not used, reserved for future. |
+
+**Returns:** If successful, resolves to `true`. Otherwise, rejects with an error message.
+
+#### `initiateInstance`
+
+Initializes a state machine instance. This instance is association between your application and a configured state machine.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that is configured within the database. |
+| generatedBy| String | The user that initiated the state machine. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. `payload` describes the next possible transitions for the state machine.
+```
+{
+			result: 'OK',
+			payload: ...
+}
+```
+If not successful, rejects with an error message.
+
+#### `getInstance`
+
+Gets the instance of the state machine. This instance is association between your application and a configured state machine.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that is being queried. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. `payload` describes the instance of the state machine.
+```
+{
+			result: 'OK',
+			payload: ...
+}
+```
+If not successful, rejects with an error message.
+
+#### `getPossibleTransitions`
+
+Finds the state machine instance and returns the possible transitions for the current state.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the current state transitions are being queried. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. `payload` describes the next possible transitions for the existing state of the state machine instance.
+```
+{
+			result: 'OK',
+			payload: ...
+}
+```
+If not successful, rejects with an error message.
+
+#### `transitionInstance`
+
+Finds the state machine instance and performs the desired transition.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the state is requested to be transitioned. |
+| transitionName| String | Name of the transition that is being requested. |
+| transitionMadeBy| String | The user that requested the transition. |
+| comment| String | Comment for the transition for instance history. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. `payload` describes the next possible transitions for the existing (new) state of the state machine instance.
+```
+{
+			result: 'OK',
+			payload: ...
+}
+```
+If not successful, rejects with an error message.
+
+#### `getInstanceHistory`
+
+Finds the state machine instance and returns the history of the transitions.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the history is being queried. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. `payload` describes the transition history of the state machine instance.
+```
+{
+			result: 'OK',
+			payload: ...
+}
+```
+If not successful, rejects with an error message.
+
+#### `getAllPossibleTransitions`
+
+Gives the state machine transition configurations.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| smName| String | Name of the state machine that the transitions are being queried. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. `payload` describes all possible transitions of the state machine. This is simply the transition configuration for the state machine.
+```
+{
+			result: 'OK',
+			payload: ...
+}
+```
+If not successful, rejects with an error message.
+
+#### `deleteInstance`
+
+Deletes the state machine instance.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| externalName| String | Connection to an application, here the value is a free-text. |
+| externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
+| smName| String | Name of the state machine that the instance is being deleted. |
+
+###### Returns
+
+If successful, resolves to an object in the following form. 
+```
+{
+			result: 'OK',
+			payload: undefined
+}
+```
+If not successful, rejects with an error message.
 
 ### Example
 
