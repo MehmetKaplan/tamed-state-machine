@@ -214,9 +214,41 @@ test('deleteInstance', async () => {
 		expect(e.error).toBe("No instance found.");
 	}
 });
+
+test('getPossibleTransitions', async () => {
+	let externalID = `FE-${new Date().getTime()}-${commonId++}`;
+	const fSuccess = (props, retval) => {
+		tickLog.success(`getPossibleTransitions test step 1 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
+		expect(retval.payload.length).toBe(1);
+	}
+	const fFail = (props, e) => {
+		tickLog.error(`getPossibleTransitions test failed at step 1`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
+		expect(true).toBe(false);
+	}
+	await tamedStateMachineFrontendHandlers.initiateInstance(testExternalName, externalID, testStateMachineName, testGeneratedBy, fSuccess, fFail);
+
+	const fSuccess2 = (props, retval) => {
+		tickLog.success(`getPossibleTransitions test step 2 backend call succeeded.\nprops: ${JSON.stringify(props, null, '  ')}\nretval: ${JSON.stringify(retval, null, '  ')}`, true);
+		expect(retval.payload.length).toBe(1);
+		expect(retval.payload[0]).toMatchObject({
+			"from_state": "Init",
+			"transition_name": "Submit",
+			"to_state": "Submitted",
+			"pre_transition_task_name": "preSubmit",
+			"post_transition_task_name": "postSubmit"
+		});
+	}
+	const fFail2 = (props, e) => {
+		tickLog.error(`getPossibleTransitions test failed at step 2`, true);
+		tickLog.error(`Called props: ${JSON.stringify(props, null, '  ')}`, true);
+		tickLog.error(`Received error: ${JSON.stringify(e, null, '  ')}`, true);
+		expect(true).toBe(false);
+	}
+	await tamedStateMachineFrontendHandlers.getPossibleTransitions(testExternalName, externalID, testStateMachineName, fSuccess2, fFail2);
+});
 /*
-	deleteInstance: deleteInstance,
-	getPossibleTransitions: getPossibleTransitions,
 	getInstanceHistory: getInstanceHistory,
 	getAllPossibleTransitions: getAllPossibleTransitions,
 */

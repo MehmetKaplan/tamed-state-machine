@@ -28,7 +28,7 @@ const tamedStateMachineBackendCall = (method, route, props, successCallback, fai
 	try {
 		retVal = await fetchLean(method, l_url, {}, props);
 		if (retVal.result === 'OK') {
-			successCallback(props, retVal);
+			successCallback(props, retVal); // IF THIS FAILS, the failCallback to be called from the catch block below
 			return resolve(retVal);
 		};
 		failCallback(props, retVal);
