@@ -1,8 +1,10 @@
 ### Why?
 
-One of the frequently encountered problems in software development is the need to handle state machines. The state machines are usually complex and the code that handles them is mostly complex as well. The common reason for complexity of the code is due to the fact that the code is hard to structure well.
+One of the frequently encountered problems in software development is the need to handle the state machines. Even though the state machine concept is straight forward, handling them is usually hard and open to errors, considering possible points that require intensive care.
 
-In order to reduce the repetitive work of handling state machines, this project was created. The project is a state machine handler that is based on a PostgresSQL database. The state machine is defined in the database and the code that handles it is generated from the database.
+In order to reduce this repetitive work of handling state machines with the needed intensive are, this project was created. This project is a state machine handler that is based on a PostgresSQL database. The state machine is defined in the database and the code that handles it is generated from the database.
+
+*Please note, this library is **not** a state machine visualization library.*
 ### Requirements
 
 1. An Ubuntu server with `bash` shell.
