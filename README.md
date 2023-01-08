@@ -1,3 +1,8 @@
+### Why?
+
+One of the frequently encountered problems in software development is the need to handle state machines. The state machines are usually complex and the code that handles them is usually complex as well. The complexity of the code is usually due to the fact that the state machine is not well defined and the code is not well structured.
+
+In order to reduce the repetitive work of handling state machines, this project was created. The project is a state machine handler that is based on a PostgresSQL database. The state machine is defined in the database and the code that handles it is generated from the database.
 ### Requirements
 
 1. An Ubuntu server with `bash` shell.
@@ -14,13 +19,13 @@ For the DB setup follow [the steps mentioned here](./database-setup/README.md).
 
 #### 2. Prepare Backend
 
-MODIFYME
 For setting up the fundamentals of the backend follow [the steps mentioned here](./backend/README.md).
 
 #### 3. Prepare Frontend
 
-MODIFYME
-The frontend functions are handlers that can be embedded into react, react-native or expo applications. For setting up the fundamentals of the frontend follow [the steps mentioned here](./frontend/README.md).
+The frontend functions are handlers that can be embedded into any client application that connects to the backend. This can be a real frontend app like the ones written with, react, react-native or expo. On the other hand there is no limitation for this library for frontend to be a presentation layer. That's why it can also be a backend node application as well. 
+
+For setting up the fundamentals of the frontend follow [the steps mentioned here](./frontend/README.md).
 
 ### License
 
