@@ -4,7 +4,7 @@ This is the frontend part of the `tamed-state-machine` library. For full setup p
 
 This, `tamed-state-machine-frontend` library, is a set of functions that communicate with a backend that utilize `tamed-state-machine-backend` library to expose the state machine functionality. 
 
-Altogether these libraries give a generic method to handle most state machine related tasks' handling.
+Altogether these libraries give a generic method to handle most state machine related tasks.
 
 The frontend functions are handlers that can be embedded into any client application that connects to the backend. This can be a real frontend app like the ones written with, react, react-native or expo. On the other hand there is no limitation for this library for frontend to be a presentation layer. That's why it can also be a backend node application as well. 
 
@@ -38,12 +38,12 @@ const apiBackend = 'http://...'; // modify this with your backend that utilize t
 4. Define your pre transition and post transition functions. 
 
 ```javascript
-const pre1 = (props) => { return "preSubmit is called" }
-const pre2 = (props) => { return "preSubmit is called" }
-...
-const post1 = (props) => { return "preSubmit is called" }
-const post2 = (props) => { return "preSubmit is called" }
-...
+const pre1 = (props) => { return "pre1 is called" }
+const pre2 = (props) => { return "pre2 is called" }
+//...
+const post1 = (props) => { return "post1 is called" }
+const post2 = (props) => { return "post2 is called" }
+//...
 ```
 
 5. Register your pre and post transition functions and backend API to the library.
@@ -65,6 +65,8 @@ tamedStateMachineFrontendHandlers.init({
 6. Now the state machine frontend is ready to be consumed by your application.
 
 ### API
+
+#### Callbacks
 
 For all functions (except the `init` function), there are 2 callback functions that should be passed as parameters. These functions are `successCallback` and `failCallback`. These functions are called when the function is successful or not successful respectively with following parameters:
   * `props`: the data that is posted to the backend
@@ -109,8 +111,8 @@ Initializes a state machine instance. This instance is association between your 
 | externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
 | smName| String | Name of the state machine that is configured within the database. |
 | generatedBy| String | The user that initiated the state machine. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 #### `getInstance`
 
 Gets the instance of the state machine. This instance is association between your application and a configured state machine.
@@ -120,8 +122,8 @@ Gets the instance of the state machine. This instance is association between you
 | externalName| String | Connection to an application, here the value is a free-text. |
 | externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
 | smName| String | Name of the state machine that is being queried. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 
 #### `getPossibleTransitions`
 
@@ -132,8 +134,8 @@ Finds the state machine instance and returns the possible transitions for the cu
 | externalName| String | Connection to an application, here the value is a free-text. |
 | externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
 | smName| String | Name of the state machine that the current state transitions are being queried. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 
 #### `transitionInstance`
 
@@ -148,8 +150,8 @@ Finds the state machine instance and performs the desired transition.
 | transitionMadeBy| String | The user that requested the transition. |
 | comment| String | Comment for the transition for instance history. |
 | possibleTransitions | Array | Array of possible transitions for the current state. This should be obtained prior to calling `transitionInstance` from previous `transitionInstance` or `initiateInstance` calls. If this value is provided, the pre and post functions are called. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 
 #### `getInstanceHistory`
 
@@ -160,8 +162,8 @@ Finds the state machine instance and returns the history of the transitions.
 | externalName| String | Connection to an application, here the value is a free-text. |
 | externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
 | smName| String | Name of the state machine that the history is being queried. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 
 #### `getAllPossibleTransitions`
 
@@ -170,8 +172,8 @@ Gives the state machine transition configurations.
 | Parameter | Type | Description |
 | --- | --- | --- |
 | smName| String | Name of the state machine that the transitions are being queried. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 
 #### `deleteInstance`
 
@@ -182,8 +184,8 @@ Deletes the state machine instance.
 | externalName| String | Connection to an application, here the value is a free-text. |
 | externalId | String | Connection to an application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the internal id of the document). |
 | smName| String | Name of the state machine that the instance is being deleted. |
-| successCallback | Function | Callback function that is called when the function is successful as described above at the start of the `API` block |
-|failCallback | Function | Callback function that is called when the function fails as described above at the start of the `API` block |
+| successCallback | Function | Callback function that is called when the function is successful as described above in the **Callbacks** section. |
+|failCallback | Function | Callback function that is called when the function fails as described above in the **Callbacks** section. |
 
 ### Example
 
