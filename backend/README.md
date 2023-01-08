@@ -2,13 +2,20 @@
 
 This is the backend part of the `tamed-state-machine` library. For full setup please refer to https://github.com/MehmetKaplan/tamed-state-machine.
 
-Following steps should lead you to prepare a proper backend setup for the `tamed-state-machine`. After this setup the backend functions can be used with `tamed-state-machine-frontend` functions.
+This, `tamed-state-machine-backend` library, is a set of functions that read the state machine configurations within the database. And associate your application's objects with those state machines.
+
+As a general rule this association is defined by following 3 parameters, which you can see frequently in the function parameters:
+
+1. `externalName` - Connection to your application. This information is valuable for you, it defines which application you are connecting. The value is free text and `tamed-state-machine` keeps it for your association. (For example if you are implementing a document approval process, this is the name of the application that you are implementing the process for).
+2. `externalId` - Connection to your application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the **internal id of the document in your application**).
+
+Once these functions are exposed as a backend server, they can be consumed by the `tamed-state-machine-frontend` functions.
 
 **IMPORTANT: This library does not focus on the authorization. It should be handled separately.**
 
 ### API
 
-#### `ìnit`
+#### `init`
 
 | Parameter | Type | Description |
 | --- | --- | --- |
