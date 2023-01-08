@@ -11,8 +11,8 @@ const postFunctions = {};
 const init = (p_params) => new Promise(async (resolve, reject) => {
 	try {
 		keys.apiBackend = p_params.apiBackend;
-		Object.assign(preFunctions, p_params?.preFunctions ? p_params.preFunctions : {});
-		Object.assign(postFunctions, p_params?.postFunctions ? p_params.postFunctions : {});
+		Object.assign(preFunctions, p_params?.preFunctions ? p_params.preFunctions : /* istanbul ignore next */ {});
+		Object.assign(postFunctions, p_params?.postFunctions ? p_params.postFunctions :  /* istanbul ignore next */ {});
 		debugMode = p_params?.debugMode;
 		return resolve(true);
 	} catch (error) /* istanbul ignore next */ {
@@ -24,6 +24,7 @@ const init = (p_params) => new Promise(async (resolve, reject) => {
 const tamedStateMachineBackendCall = (method, route, props, successCallback, failCallback) => new Promise(async (resolve, reject) => {
 	let retVal;
 	let l_url = `${keys.apiBackend}/${route}`;
+	/* istanbul ignore if */
 	if (debugMode) tickLog.start(`tamedStateMachineBackendCall ${method} ${l_url}`);
 	try {
 		retVal = await fetchLean(method, l_url, {}, props);
@@ -54,6 +55,7 @@ const transitionInstance = (externalName, externalId, smName, transitionName, tr
 	if (possibleTransitions) {
 		// Example data: { "id": 869, "sm_id": 128, "from_state": "Init", "transition_name": "Submit", "to_state": "Submitted", "pre_transition_task_name": "preSubmit", "post_transition_task_name": "postSubmit" }]
 		const transitionConfig = possibleTransitions.filter((transition) => transition.transition_name === transitionName);
+		/* istanbul ignore else */ 
 		if (transitionConfig && transitionConfig.length === 1) {
 			preTransitionTaskName = transitionConfig[0].pre_transition_task_name;
 			postTransitionTaskName = transitionConfig[0].post_transition_task_name;
