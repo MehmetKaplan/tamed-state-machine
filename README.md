@@ -1,6 +1,6 @@
 ### Why?
 
-One of the frequently encountered problems in software development is the need to handle state machines. The state machines are usually complex and the code that handles them is usually complex as well. The complexity of the code is usually due to the fact that the state machine is not well defined and the code is not well structured.
+One of the frequently encountered problems in software development is the need to handle state machines. The state machines are usually complex and the code that handles them is mostly complex as well. The common reason for complexity of the code is due to the fact that the code is hard to structure well.
 
 In order to reduce the repetitive work of handling state machines, this project was created. The project is a state machine handler that is based on a PostgresSQL database. The state machine is defined in the database and the code that handles it is generated from the database.
 ### Requirements
