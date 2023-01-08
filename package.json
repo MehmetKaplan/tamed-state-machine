@@ -1,6 +1,6 @@
 {
   "name": "tamed-state-machine",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "A state machine handler for node.js using PostgreSQL.",
   "main": "index.js",
   "repository": "https://github.com/MehmetKaplan/tamed-state-machine",

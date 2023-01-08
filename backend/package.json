@@ -1,6 +1,6 @@
 {
 	"name": "tamed-state-machine-backend",
-	"version": "1.0.1",
+	"version": "1.0.5",
 	"description": "The backend library for the tamed-state-machine",
 	"repository": "https://github.com/MehmetKaplan/tamed-state-machine",
 	"main": "tamed-state-machine-backend.js",
