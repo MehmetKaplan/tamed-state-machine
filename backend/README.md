@@ -1,4 +1,4 @@
-## SETUP - BACKEND
+## WHY?
 
 This is the backend part of the `tamed-state-machine` library. For full setup please refer to https://github.com/MehmetKaplan/tamed-state-machine.
 
@@ -8,6 +8,9 @@ As a general rule this association is defined by following 3 parameters, which y
 
 1. `externalName` - Connection to your application. This information is valuable for you, it defines which application you are connecting. The value is free text and `tamed-state-machine` keeps it for your association. (For example if you are implementing a document approval process, this is the name of the application that you are implementing the process for).
 2. `externalId` - Connection to your application, here the value is usually the primary key of the connected document. (For example if you are implementing a document approval process, this is the **internal id of the document in your application**).
+3. `smName` - Name of the state machine that is configured within the database. In order to see how the state machines can be configured, please refer to [state machine configuration](../database-setup/README-SM-CONFIG.md)
+
+**Note:** *Whenever the database is modified with new state machines, states, transitions, etc, the backend server will be able to read and use the definitions since we do not cache the state machine configurations. The rationale behind this is that we do not want to restart the backend server each time a new state machine is defined.*
 
 Once these functions are exposed as a backend server, they can be consumed by the `tamed-state-machine-frontend` functions.
 
@@ -27,8 +30,6 @@ Once these functions are exposed as a backend server, they can be consumed by th
 | --- | --- | --- |
 | pgKeys | Object | PostgreSQL connection parameters. |
 | applicationName | String | Application name. Not used, reserved for future. |
-
-
 #### `initiateInstance`
 
 Initializes a state machine instance. This instance is association between your application and a configured state machine.
@@ -103,14 +104,7 @@ Deletes the state machine instance.
 
 
 
-
-
-
-
-
-
-
-A working example with below steps are here: https://github.com/MehmetKaplan/tamed-state-machine/tree/master/backend/tamed-state-machine-backend-server-example
+### SETUP
 
 1. Add the request handlers as a dependency of your project.
 
@@ -118,15 +112,9 @@ A working example with below steps are here: https://github.com/MehmetKaplan/tam
 yarn add tamed-state-machine-backend
 ```
 
-2. Add the library to your backend express server.
+2. Initialize parameters (modify below object according to your environment)
 
-```javascript
-const serialEntrepreneurBackendHandlers = require('tamed-state-machine-backend');
-```
-
-3. Initialize parameters (modify below object according to your environment)
-
-Name below example configuration as `server-parameters.js` and place it in the root directory of your express server. This file is to be `require`d by your express server. **You should modify the credentials, secrets, etc, according to your environment.**
+Name below example configuration as `server-parameters.js` and place it in the root directory of your express server. This file is to be `require`d by your express server in the next step. **You should modify the credentials, according to your environment.**
 
 ```javascript
 module.exports = {
@@ -145,61 +133,24 @@ module.exports = {
 }
 ```
 
-4. Prepare your express server code. (Below can be used as an example.)
-
-Name below example server as `tamed-state-machine-backend-server.js`:
+3. Call the `init` function of the library to initialize the db connection pool.
 
 ```javascript
+const serialEntrepreneurBackendHandlers = require('tamed-state-machine-backend');
+const serverParameters = require('./server-parameters.js');
+...
+const startServer = async () => {
+	await tsmb.init(
+		{
+			pgKeys: serverParameters.pgKeys,
+			applicationName: 'YOUR APPLICATION NAME',
+		}
+	);
+	// ...
+	// Rest of your application server code
+}
 ```
 
-5. Finally start your server.
+4. Finally start your server. Now the state machine backend is ready to be consumed by the frontend.
 
-```bash
-node tamed-state-machine-backend-server.js
-```
-
-6. Each time you need a state machine model it in the database first.
-
-### Example
-
-We'll try to implement a document approval flow as a state machine. Let's assume following are the states and transitions in a document approval flow:
-
-```mermaid
-stateDiagram-v2
-	[*] --> Submitted
-	Submitted --> Approved
-	Submitted --> Rejected
-	Approved --> Submitted
-	Rejected --> Submitted
-	Approved --> [*]
-	Rejected --> [*]
-```
-
-To model this state machine in the database, we need to create a state machine with name `Document Approval` and description `Document Approval State Machine`. We need to create states and transitions as shown in the diagram above. The following SQL statements can be used to create the state machine:
-
-```sql
--- STATE MACHINE
-insert into tsm.state_machines (name, description) 
-	values ('Document Approval', 'Test State Machine for Document Approval') 
-	returning id into current_sm_id;
--- STATES
-insert into tsm.state_machine_states (sm_id, state, state_type, description) 
-	values
-		(current_sm_id, 'Init', 'I', 'Initial State'),
-		(current_sm_id, 'Submitted', 'S', 'Submitted State'),
-		(current_sm_id, 'Approved', 'S', 'Approved State'),
-		(current_sm_id, 'Rejected', 'S', 'Rejected State'),
-		(current_sm_id, 'Closed', 'F', 'Final State');
--- TRANSITIONS
-insert into tsm.state_machine_state_transitions (sm_id, from_state, transition_name, to_state, pre_transition_task_name, post_transition_task_name) 
-	values
-		(current_sm_id, 'Init', 'Submit', 'Submitted', 'preSubmit', 'postSubmit'),
-		(current_sm_id, 'Submitted', 'Approve', 'Approved', 'preApprove', 'postApprove'),
-		(current_sm_id, 'Submitted', 'Reject', 'Rejected', 'preReject', 'postReject'),
-		(current_sm_id, 'Approved', 'Modify', 'Submitted', 'preModify', 'postModify'),
-		(current_sm_id, 'Approved', 'Close', 'Closed', 'preClose', 'postClose'),
-		(current_sm_id, 'Rejected', 'Modify', 'Submitted', 'preModify', 'postModify'),
-		(current_sm_id, 'Rejected', 'Close', 'Closed', 'preClose', 'postClose');
-```
-
-Whenever the database is modified with new state machines, states, transitions, etc, the backend server will be able to read and use the definitions since we do not cache the state machine configurations. The rationale behind this is that we do not want to restart the backend server each time a new state machine is defined.
+5. Each time you need a state machine model configure it in the database as in the [state machine configuration](../database-setup/README-SM-CONFIG.md).
