@@ -154,3 +154,17 @@ const startServer = async () => {
 4. Finally start your server. Now the state machine backend is ready to be consumed by the frontend.
 
 5. Each time you need a state machine model configure it in the database as in the [state machine configuration manual](../database-setup/README-SM-CONFIG.md)
+
+### Example
+
+For a better understanding of how to use this library, please refer to [this example](../example/README.md).
+
+### License
+
+The license is MIT and full text [here](LICENSE).
+
+#### Used Modules
+
+* tick-log license [here](../OtherLicenses/tick-log.txt)
+* tamed-pg license [here](../OtherLicenses/tamed-pg.txt)
+* fetch-lean license [here](../OtherLicenses/fetch-lean.txt)

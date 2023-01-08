@@ -37,6 +37,7 @@ For setting up the fundamentals of the frontend follow [the steps mentioned here
 ### Example
 
 For a better understanding of how to use this library, please refer to [this example](./example/README.md).
+
 ### License
 
 The license is MIT and full text [here](LICENSE).
