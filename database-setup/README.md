@@ -46,11 +46,11 @@ Connect to your database like **DANGEROUS, DO THIS STEP IF NEEDED, CONSCIOUSLY**
 ```bash
 sudo -u postgres psql
 ```
-and copy-paste [this file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/step00000.sql).
+and copy-paste [this file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/step00001.sql).
 
 #### Generate the objects
 
-Check the [the https://github.com/MehmetKaplan/tamed-state-machine/blob/master/step00001.sql file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/step00001.sql) and observe below line. You **should** modify this line and change the password and save it to a safe place. 
+Check the [the `step00001.sql` file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/step00001.sql) and observe below line. You **should** modify this line and change the password and save it to a safe place. 
 
 ```sql
 create user tsmapp encrypted password 'tsmapp.';
@@ -62,7 +62,7 @@ Connect to your database like
 ```bash
 sudo -u postgres psql
 ```
-and copy-paste [the step00001.sql file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/step00001.sql).
+and copy-paste [the `step00001.sql` file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/step00001.sql).
 
 And finally restart the PostgreSQL instance so that the connection method becomes effective.
 
@@ -72,7 +72,7 @@ sudo service postgresql restart
 
 #### Test the connection
 
-In order to verify if everything is OK up to this point we can use the below script. For this script username and password are coming from the previous step, the [step00001.sql file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/step00001.sql), as stated in the prebious section. The `psql` command should ask you the password and you'll need to provide the password coming from previous step.
+In order to verify if everything is OK up to this point we can use the below script. For this script username and password are coming from the previous step, [the `step00001.sql` file content](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/database-setup/step00001.sql), as stated in the previous section. The `psql` command should ask you the password and you'll need to provide the password coming from previous step.
 
 ```bash
 psql -U tsmapp -d tsmdb <<EOF
