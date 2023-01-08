@@ -40,5 +40,5 @@ For a better understanding of how to use this library, please refer to [this exa
 
 ### License
 
-The license is MIT and full text [here](LICENSE).
+The license is MIT and full text [here](https://github.com/MehmetKaplan/tamed-state-machine/blob/master/LICENSE).
 
