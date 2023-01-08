@@ -7,4 +7,5 @@ coverage
 keys
 web-build
 dist
+deploy_backend-EXLUDEDFROMGIT.sh
 
